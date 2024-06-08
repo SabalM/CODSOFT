@@ -1,8 +1,9 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report
-from tqdm import tqdm
+import joblib
 
 def load_and_prepare_data(file_path):
     mydata = pd.read_csv(file_path)
@@ -14,18 +15,15 @@ if __name__ == "__main__":
     # Load and prepare training data
     train_data = load_and_prepare_data(train_file_path)
 
-    # TF-IDF Vectorization
-    tfidf = TfidfVectorizer()
-    X_train = tfidf.fit_transform(train_data['CLEANED_DESCRIPTION'])
-    y_train = train_data['GENRE']
+    # TF-IDF Vectorization and Naive Bayes Classifier in a pipeline
+    model = Pipeline([
+        ("vectorizer", TfidfVectorizer()),
+        ("classifier", MultinomialNB())
+    ])
 
-    # Train Model with progress bar
-    model = RandomForestClassifier()
+    # Train classifier
+    model.fit(train_data['CLEANED_DESCRIPTION'], train_data['GENRE'])
 
-    epochs = 10  # Define number of epochs
-    with tqdm(total=epochs, desc="Training Progress") as pbar:
-        for epoch in range(epochs):
-            model.fit(X_train, y_train)
-            pbar.update(1)
-
-    print("Model training completed.")
+    # Save the trained model
+    joblib.dump(model, 'trained_model.pkl')
+    print("Model training completed and saved as 'trained_model.pkl'.")
