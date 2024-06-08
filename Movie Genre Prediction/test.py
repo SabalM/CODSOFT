@@ -31,15 +31,14 @@ if __name__ == "__main__":
     # Ensure test data and solution data align properly
     test_data = test_data.merge(solution_data, on='ID')
 
-    # Check the column names after merging
-    print(test_data.columns)
-
-    # Load the trained model
-    model = joblib.load('trained_model.pkl')
+    # Load the trained model (choose one based on model name)
+    model = joblib.load('trained_model_NBC.pkl')
+    # model = joblib.load('trained_model_LGC.pkl')
+    # model = joblib.load('trained_model_SVM.pkl')
 
     # Predict on test data
     X_test = test_data['CLEANED_DESCRIPTION']
-    y_test = test_data['GENRE']  # Ensure this matches the actual column name
+    y_test = test_data['GENRE']  # Use the correct column name 'GENRE' from the solution file
 
     y_pred = model.predict(X_test)
 
