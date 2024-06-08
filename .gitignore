@@ -1,4 +1,8 @@
+#for movie genre prediction
 env/
+
+#for creditcard fraud detection
+env2/
 
 #dataset too large
 Credit Card Fraud Detection/dataset
