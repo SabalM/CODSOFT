@@ -1,5 +1,3 @@
 env/
 
-Credit Card Fraud Detection/dataset/fraudTest.csv
-
-Credit Card Fraud Detection/dataset/fraudTrain.csv
+Credit Card Fraud Detection/dataset
