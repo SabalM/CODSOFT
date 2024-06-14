@@ -7,8 +7,6 @@ import nltk
 nltk.download('stopwords')
 
 def tokenize_overview(mydata, overview_col):
-    # Function to clean show overview
-    # Return: each row as a list of tokens
 
     # removes punctuation
     tokenizer = RegexpTokenizer(r"\w+")
