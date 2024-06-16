@@ -32,9 +32,9 @@ if __name__ == "__main__":
     test_data = test_data.merge(solution_data, on='ID')
 
     # Load the trained model (choose one based on model name)
-    model = joblib.load('trained_model_NBC.pkl')
-    # model = joblib.load('trained_model_LGC.pkl')
-    # model = joblib.load('trained_model_SVM.pkl')
+    model = joblib.load('models/trained_model_NBC.pkl')
+    # model = joblib.load('models/trained_model_LGC.pkl')
+    # model = joblib.load('models/trained_model_SVM.pkl')
 
     # Predict on test data
     X_test = test_data['CLEANED_DESCRIPTION']

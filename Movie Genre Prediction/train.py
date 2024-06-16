@@ -48,6 +48,6 @@ if __name__ == "__main__":
     model.fit(train_data['CLEANED_DESCRIPTION'], y_train)
 
     # Save the trained model (choose one according to classifier)
-    joblib.dump(model, 'trained_model_NBC.pkl')
-    # joblib.dump(model, 'trained_model_LGC.pkl')
-    # joblib.dump(model, 'trained_model_SVM.pkl')
+    joblib.dump(model, 'models/trained_model_NBC.pkl')
+    # joblib.dump(model, 'models/trained_model_LGC.pkl')
+    # joblib.dump(model, 'models/trained_model_SVM.pkl')
