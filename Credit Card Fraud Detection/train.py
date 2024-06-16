@@ -53,12 +53,35 @@ for name, model in models.items():
 best_model = models['Logistic Regression']
 joblib.dump(best_model, 'models/best_model_logistic_regression.joblib')
 
+    # Obtained Validation Metrics for Logistic Regression:
+    # Accuracy: 0.9937
+    # Precision: 0.0156
+    # Recall: 0.0013
+    # F1-score: 0.0024
+    # ROC-AUC: 0.5004
+
+
 # Save the Decision Tree model
 best_model = models['Decision Tree']
 joblib.dump(best_model, 'models/best_model_decision_tree.joblib')
 
+    # Obtained Validation Metrics for Decision Tree:
+    # Accuracy: 0.9970
+    # Precision: 0.7352
+    # Recall: 0.7618
+    # F1-score: 0.7483
+    # ROC-AUC: 0.8801
+
+
 # Save the Random Forest model
 best_model = models['Random Forest']
 joblib.dump(best_model, 'models/best_model_random_forest.joblib')
+
+    # Obtained Validation Metrics for Random Forest:
+    # Accuracy: 0.9981
+    # Precision: 0.9464
+    # Recall: 0.7079
+    # F1-score: 0.8099
+    # ROC-AUC: 0.8538
 
 print("Model training completed. Uncomment the model you want to save and rerun the script.")
