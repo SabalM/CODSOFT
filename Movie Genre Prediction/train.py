@@ -26,7 +26,7 @@ if __name__ == "__main__":
     class_weights = compute_class_weight('balanced', classes=pd.unique(y_train), y=y_train)
     class_weight_dict = {cls: weight for cls, weight in zip(pd.unique(y_train), class_weights)}
 
-    # Choose a classifier (Naive Bayes, Logistic Regression, or SVM)
+    # Choose a classifier (Naive Bayes, Logistic Regression or Support Vector Machine)
     # Uncomment the desired classifier and comment out the others
 
     # Naive Bayes classifier (obtained accuracy= 0.44)
