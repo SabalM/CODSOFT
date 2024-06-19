@@ -1,8 +1,11 @@
 #for movie genre prediction
 env/
 
-#for creditcard fraud detection
+#for credit card fraud detection
 env2/
+
+#for spam sms detection
+env3/
 
 #dataset too large
 Credit Card Fraud Detection/dataset
