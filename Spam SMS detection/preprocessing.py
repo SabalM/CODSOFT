@@ -3,6 +3,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+from sklearn.model_selection import train_test_split
 
 # Ensure you have the necessary NLTK data files
 nltk.download('stopwords')
@@ -37,7 +38,7 @@ def clean_data(df):
 
     return df
 
-# Preprocess text: Tokenize, lowercase, remove special characters and stop words, and apply stemming
+# Preprocess text: 
 def preprocess_text(text):
     # Tokenize and lowercase
     text = text.lower()
@@ -53,16 +54,13 @@ def preprocess_text(text):
 
     return ' '.join(tokens)
 
-# Apply preprocessing to the relevant columns in the dataset
+# Apply preprocessing 
 def preprocess_dataset(df):
-    if 'v2' in df.columns:
-        df['v2'] = df['v2'].apply(preprocess_text)
-    else:
-        raise KeyError("Column 'v2' not found in the DataFrame. Adjust preprocessing logic.")
-
+    df['v2'] = df['v2'].apply(preprocess_text)
     return df
 
-# Main function to load, clean, preprocess, and save the dataset
+# load, clean, preprocess, split, and save the dataset
+
 file_path = 'dataset/spam.csv'  # Adjust the path to your dataset file
 
 # Load and clean the dataset
@@ -72,6 +70,17 @@ df = clean_data(df)
 # Preprocess the text data
 df = preprocess_dataset(df)
 
-# Save the cleaned dataset for later use
-df.to_csv('dataset/processed_dataset.csv', index=False)
+# Split data into train and test sets
+X = df['v2']  # Features (preprocessed text)
+y = df['v1']  # Labels (spam or ham)
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Save the datasets
+train_df = pd.DataFrame({'v1': y_train, 'v2': X_train})
+test_df = pd.DataFrame({'v1': y_test, 'v2': X_test})
+
+train_df.to_csv('dataset/train_dataset.csv', index=False)
+test_df.to_csv('dataset/test_dataset.csv', index=False)
+
+print("Train and test datasets saved successfully.")
