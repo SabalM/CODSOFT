@@ -1,6 +1,6 @@
 import pandas as pd
 import joblib
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 def load_and_prepare_data(file_path):
     mydata = pd.read_csv(file_path, encoding='utf-8')
@@ -40,12 +40,18 @@ if __name__ == "__main__":
     X_test = test_data['CLEANED_DESCRIPTION']
     y_test = test_data['GENRE']  # Use the correct column name 'GENRE' from the solution file
 
-    y_pred = model.predict(X_test)
+    y_test_pred = model.predict(X_test)
 
-    # Evaluate the model
-    accuracy = accuracy_score(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
+    # Calculate test set evaluation metrics
+    accuracy = accuracy_score(y_test, y_test_pred)
+    precision = precision_score(y_test, y_test_pred, average='weighted')
+    recall = recall_score(y_test, y_test_pred, average='weighted')
+    f1 = f1_score(y_test, y_test_pred, average='weighted')
+    roc_auc = roc_auc_score(y_test, model.predict_proba(X_test), multi_class='ovr')
 
-    print(f"Accuracy: {accuracy}")
-    print("Classification Report:")
-    print(report)
+    print("Test Set Metrics for the Chosen Model:")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1-score: {f1:.4f}")
+    print(f"ROC-AUC: {roc_auc:.4f}")
