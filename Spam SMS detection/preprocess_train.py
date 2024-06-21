@@ -4,6 +4,10 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+
+from sklearn.naive_bayes import MultinomialNB
+import joblib
 
 # Ensure you have the necessary NLTK data files
 nltk.download('stopwords')
@@ -54,33 +58,54 @@ def preprocess_text(text):
 
     return ' '.join(tokens)
 
+
+
 # Apply preprocessing 
 def preprocess_dataset(df):
     df['v2'] = df['v2'].apply(preprocess_text)
+
+    # Convert 'ham' to 0 and 'spam' to 1
+    df['v1'] = df['v1'].map({'ham': 0, 'spam': 1})
+
     return df
 
-# load, clean, preprocess, split, and save the dataset
+if __name__ == "__main__":
+    file_path = 'dataset/spam.csv'  # Adjust the path to your dataset file
 
-file_path = 'dataset/spam.csv'  # Adjust the path to your dataset file
+    # Load and clean the dataset
+    df = load_dataset(file_path)
+    # Preprocess the text data and convert labels
+    df = preprocess_dataset(df)
 
-# Load and clean the dataset
-df = load_dataset(file_path)
-df = clean_data(df)
+    df = clean_data(df)
 
-# Preprocess the text data
-df = preprocess_dataset(df)
+    cv = CountVectorizer()
 
-# Split data into train and test sets
-X = df['v2']  # Features (preprocessed text)
-y = df['v1']  # Labels (spam or ham)
+    #converting sparse array returned after transformation into dense array
+    X = cv.fit_transform(df['v2']).toarray()
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # TF-IDF Vectorization
+    tfidf = TfidfVectorizer()
+    X = tfidf.fit_transform(df['v2'])
+    # y_train = ['v1']
 
-# Save the datasets
-train_df = pd.DataFrame({'v1': y_train, 'v2': X_train})
-test_df = pd.DataFrame({'v1': y_test, 'v2': X_test})
+    # Split data into train and test sets
+    # X = df['v2']  # Features (preprocessed text)
+    y = df['v1'].values  # Labels (0 or 1)
 
-train_df.to_csv('dataset/train_dataset.csv', index=False)
-test_df.to_csv('dataset/test_dataset.csv', index=False)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-print("Train and test datasets saved successfully.")
+    # Save the datasets
+    # train_df = pd.DataFrame({'v1': y_train, 'v2': X_train})
+    # test_df = pd.DataFrame({'v1': y_test, 'v2': X_test})
+
+    # train_df.to_csv('dataset/train_dataset.csv', index=False)
+    # test_df.to_csv('dataset/test_dataset.csv', index=False)
+
+    # print("Train and test datasets saved successfully.")
+    
+    model = MultinomialNB()
+
+    model.fit(X_train, y_train)
+
+    joblib.dump(model, 'models/trained_model_NBC.pkl')
